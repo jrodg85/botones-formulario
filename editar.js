@@ -17,8 +17,9 @@ this.getField("MES").readonly = false;
 this.getField("BORRAR DATOS FORMULARIO").display = display.visible;
 
 // 3. Ocultar Campos
-this.getField("FIRMA SOLICITANTE").display = display.hidden;
 this.getField("EDITAR").display = display.hidden;
+this.getField("GUARDAR").display = display.hidden;
+this.getField("FIRMA SOLICITANTE").display = display.hidden;
 this.getField("FIRMA S1").display = display.hidden;
 this.getField("NO PRECISA DE FIRMA EN ESTE DOCUMENTO").display = display.hidden;
 this.getField("FIRMA MANUSCRITA SOLICITANTE").display = display.hidden;
