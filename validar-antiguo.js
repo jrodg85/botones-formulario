@@ -75,15 +75,15 @@ function comprobarCheckBoxPresentaCertificadoDeAcreditacion() {
 
 function comprobarCheckBoxPresentaFacturasCurso() {
     var checkboxState = this.getField("PRESENTA FACTURAS CURSO").isBoxChecked(0); // Verificar el estado del checkbox
-    var bookmarkExistsFlag = checkBookmarkExists("03-FACTURAS"); // Verificar la existencia del marcador
+    var bookmarkExistsFlag = checkBookmarkExists("03-FACTURAS-JUSTIFICANTE"); // Verificar la existencia del marcador
 
     if (checkboxState) { // Si el checkbox está marcado
         if (!bookmarkExistsFlag) {
-            app.alert("En el documento ha indicado que el solicitante presenta FACTURAS DE CURSO, CLASES Y/O TASAS DE EXAMEN. \nPara solventar este error, siga los siguientes pasos: \n1. Combine en PDF toda la documentación relativa a las tasas de examen en un solo archivo pdf. \n2. Llame al documento pdf como 03-FACTURAS. \n3. Combine este documento junto con el 03-FACTURAS. \nSI NO REALIZA TODOS ESTOS PASOS, NO VALIDARÁ EL DOCUMENTO.");
+            app.alert("En el documento ha indicado que el solicitante presenta FACTURAS DE CURSO, CLASES Y/O TASAS DE EXAMEN JUNTO CON JUSTIFICANTES DE PAGO. \nPara solventar este error, siga los siguientes pasos: \n1. Combine en PDF toda la documentación relativa facturas y/o justificantes de pago  de examen en un solo archivo pdf. \n2. Llame al documento pdf como 03-FACTURAS-JUSTIFICANTE. \n3. Combine la presente solicitud junto con el archivo 03-FACTURAS-JUSTIFICANTE. \nSI NO REALIZA TODOS ESTOS PASOS, NO VALIDARÁ EL DOCUMENTO.");
             return;
         }
     } else { // Si el checkbox no está marcado
-        app.alert("Para la evaluación de la ayuda, es obligatorio la presentacion de facturas, por tanto, marque la casilla de Facturas de curso, clases y/o tasas de examen. \n Para adjuntar FACTURAS DE CURSO, CLASES Y/O TASAS DE EXAMEN, siga los siguientes pasos: \n1. Combine en PDF toda la documentación relativa a las tasas de examen en un solo archivo pdf. \n2. Llame al documento pdf como 03-FACTURAS. \n3. Combine este documento junto con el 03-FACTURAS. \nSI NO REALIZA TODOS ESTOS PASOS, NO VALIDARÁ EL DOCUMENTO.");
+        app.alert("Para la evaluación de la ayuda, es obligatorio la presentacion de facturas, por tanto, marque la casilla de FACTURAS DE CURSO, CLASES Y/O TASAS DE EXAMEN JUNTO CON JUSTIFICANTES DE PAGO. \n Para adjuntar FACTURAS DE CURSO, CLASES Y/O TASAS DE EXAMEN, siga los siguientes pasos: \n1. Combine en PDF toda la documentación relativa a las tasas de examen en un solo archivo pdf. \n2. Llame al documento pdf como 03-FACTURAS-JUSTIFICANTE. \n3. Combine la presente solicitud  junto con el 03-FACTURAS-JUSTIFICANTE. \nSI NO REALIZA TODOS ESTOS PASOS, NO VALIDARÁ EL DOCUMENTO.");
             return;
         
     }
@@ -219,6 +219,7 @@ function comprobarNIF() {
     booleanComprobarNIF =true;
 }
 
+
 function comprobarCorreoElectronico() {
     // Accedemos al valor del campo donde se introduce el correo electrónico
     var correo = this.getField("CORREO ELECTRÓNICO").valueAsString;
@@ -324,7 +325,6 @@ function comprobarDia() {
 }
 
 
-
 function comprobarMes() {
     // Nombre del campo del menú desplegable
     var nombreCampo = "MES";
@@ -360,6 +360,7 @@ function comprobarMes() {
     }
 }
 
+
 // Llamada a la función principal
 comprobarCheckBoxAnexoI()
 comprobarCheckBoxPresentaCertificadoDeAcreditacion();
@@ -377,8 +378,44 @@ comprobarMes();
 app.alert("fin de comprobaciones", 3);
 
 // Verificar el valor de booleanComprobarCheckBoxAnexoI
-if (booleanComprobarCheckBoxAnexoI && booleanComprobarCheckBoxPresentaCertificadoDeAcreditacion && booleanComprobarCheckBoxPresentaFacturasCurso && booleanComprobarNombre && booleanComprobarPrimerApellido && booleanComprobarSegundoApellido && booleanComprobarEmpleo && booleanComprobarNIF &&  booleanComprobarCorreoElectronico && booleanComprobarSeleccionIdioma && booleanComprobarCiudad && booleanComprobarDia && booleanComprobarMes) {
+if (booleanComprobarCheckBoxAnexoI && booleanComprobarCheckBoxPresentaCertificadoDeAcreditacion && booleanComprobarCheckBoxPresentaFacturasCurso &&  booleanComprobarNombre && booleanComprobarPrimerApellido && booleanComprobarSegundoApellido && booleanComprobarEmpleo && booleanComprobarNIF &&  booleanComprobarCorreoElectronico && booleanComprobarSeleccionIdioma && booleanComprobarCiudad && booleanComprobarDia && booleanComprobarMes) {
+
+    
+    // Ocultar y bloquear campos según los requisitos
+    this.getField("BORRAR DATOS FORMULARIO").display = display.hidden;
+    this.getField("EDITAR").display = display.visible;
+    this.getField("GUARDAR").display = display.visible;
+    this.getField("FIRMA S1").display = display.visible;
+    this.getField("VALIDAR").display = display.hidden;
+
+
+    var camposABloquear = [
+        "NOMBRE", "PRIMER APELLIDO", "SEGUNDO APELLIDO", "EMPLEO", "NIF", "CORREO ELECTRÓNICO", "SELECCION DE IDIOMA", "PRESENTA ANEXO I",
+        "PRESENTA CERTIFICADO DE ACREDITACION", "PRESENTA FACTURAS CURSO", "CIUDAD", "DIA", "MES"
+    ];
+    
+    for (var i = 0; i < camposABloquear.length; i++) {
+        this.getField(camposABloquear[i]).readonly = true;
+    }
+    
+    // Nombre del campo checkbox
+    var nombreCheckboxPresentaAnexoI = "PRESENTA ANEXO I";
+
+    // Obtenemos el estado del checkbox
+    var nombreCheckboxPresentaAnexoI = this.getField(nombreCheckboxPresentaAnexoI);
+
+    // Comprobamos el estado del checkbox
+    if (nombreCheckboxPresentaAnexoI.valueAsString === "Off") {
+        // Si el checkbox no está activado, ocultamos el botón "FIRMA MANUSCRITA SOLICITANTE" y mostramos el botón "FIRMA SOLICITANTE"
+        this.getField("FIRMA MANUSCRITA SOLICITANTE").display = display.hidden;
+        this.getField("FIRMA SOLICITANTE").display = display.visible;
+
+    } else {
+        // Si el checkbox está activado, mostramos el SOLO LA FIRMA DE S1 y ocultamos LA FIRMA DE SOLICITANTE
+        this.getField("FIRMA SOLICITANTE").display = display.hidden;
+        this.getField("FIRMA MANUSCRITA SOLICITANTE").display = display.visible;
+
+    }
+
     app.alert("El Documento ha sido validado correctamente, proceda a su firma", 3);
 }
-
-
