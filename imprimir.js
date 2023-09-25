@@ -320,7 +320,6 @@ function comprobarDia() {
 }
 
 
-
 function comprobarMes() {
     // Nombre del campo del menú desplegable
     var nombreCampo = "MES";
@@ -356,7 +355,6 @@ function comprobarMes() {
     }
 }
 
-
 // Llamada a la función principal
 comprobarNombre();
 comprobarPrimerApellido();
@@ -369,10 +367,6 @@ comprobarCiudad();
 comprobarDia();
 comprobarMes();
 app.alert("fin de comprobaciones", 3);
-
-
-
-
 
 // Verificar el valor de los booleanos de comprobación
 if (booleanComprobarNombre && booleanComprobarPrimerApellido && booleanComprobarSegundoApellido && booleanComprobarEmpleo && booleanComprobarNIF &&  booleanComprobarCorreoElectronico && booleanComprobarSeleccionIdioma && booleanComprobarCiudad && booleanComprobarDia && booleanComprobarMes) {
